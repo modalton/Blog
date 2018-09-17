@@ -1,7 +1,7 @@
 #+OPTIONS: toc:nil  
 #+OPTIONS: num:nil
 
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./../static/org.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./static/org.css"/>
 
 * Eex Eludicated
 ** Problem
