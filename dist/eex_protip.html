@@ -3,8 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>eex_protip</title>
-<!-- 2018-09-16 Sun 19:48 -->
+<title>Eex Eludicated</title>
+<!-- 2018-09-22 Sat 17:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Michael Dalton" />
@@ -138,24 +138,152 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">eex_protip</h1>
+<h1 class="title">Eex Eludicated</h1>
 
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1">Eex Eludicated</h2>
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Problem</h3>
+<h3 id="sec-1-1">Preface</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
-Muh problem
+   I've been playing with Elixir for a few months and it's been an absolute joy. The first
+real problem I had involved Eex so I thought I'd have a post detailing how I came to grok the
+docs and move past the problem. It's possible this is totally obvious since I've only used
+SPAs and am new to SSR. However, this is my first post using org-export and I need some reps.
+Now that you've been warned, the the block I hit involved nested conditional logic in Eex. 
+This seems simple enough, however, the Eex docs are terse and while technically correct, I felt 
+like I was reading a project using Doxygen in college - everywhere you look it's the exact 
+same definition and, while correct, if that singular defintion doesn't do it for you, you're up 
+a creek.
 </p>
+
+<p>
+Definitions in question (<a href="https://hexdocs.pm/eex/EEx.html">Link to doc</a>)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elixir">&lt;% Elixir expression - inline with output %&gt;
+&lt;%= Elixir expression - replace with result %&gt;
+&lt;%% EEx quotation - returns the contents inside %&gt;
+&lt;%# Comments - they are discarded from source %&gt;
+</pre>
+</div>
+
+<p>
+The doc's not so real world example
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elixir">&lt;%= if true do %&gt;
+  It is obviously true
+&lt;% else %&gt;
+  This will never appear
+&lt;% end %&gt;
+</pre>
 </div>
 </div>
+</div>
+
 <div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">Solution</h3>
+<h3 id="sec-1-2">Iex session</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-Muh solution
+   Let's spin up Iex here and see what's going on. Let's try a version of the example provieded
+in the docs. Disclaimer for all iex examples, I have removed all basic REPL confirmation
+responses to increase readability.
+</p>
+
+<p>
+Example
+</p>
+<pre class="example">
+iex&gt; template = "&lt;%= if x &lt; 10 do %&gt;
+...&gt;   &lt;%= x %&gt; is smoll boi
+...&gt; &lt;% else %&gt;
+...&gt;   &lt;%= x %&gt; is big boi
+...&gt; &lt;% end %&gt;"
+iex&gt; EEx.eval_string(template, x: 14)
+"\n  14 is big boi\n"
+</pre>
+
+<p>
+Intresting, we've nested a &lt;%= and it's evaluated. Let's try replacing that with &lt;%. 
+</p>
+
+<p>
+Difference between &lt;% and &lt;%=
+</p>
+<pre class="example">
+iex&gt; template_two = "&lt;%= if x &lt; 10 do %&gt;
+...&gt;   &lt;% x %&gt; is smoll boi
+...&gt; &lt;% else %&gt;
+...&gt;   &lt;% x %&gt; is big boi
+...&gt; &lt;% end %&gt;"
+iex&gt; EEx.eval_string(template_two, x: 14)
+"\n   is big boi\n\n"
+</pre>
+
+<p>
+    It's missing! And we get some warnings about x being in a code block with no effect (verbose
+so omitted). So it appears the &lt;% tags can contain Elixir code, it just isn't evaluated to 
+template. The &lt;%= will insert the results of any Elixir in the tag. Let's do one more experiment 
+and see if it evalutes multiple levels.
+</p>
+
+<pre class="example">
+iex&gt; nest = "&lt;%= if x &lt; 10 do %&gt;
+...&gt;   &lt;%= if x &lt; 5 do %&gt;
+...&gt;     &lt;%= x %&gt; is verry smoll boi
+...&gt;   &lt;%= else %&gt;
+...&gt;     &lt;%= x %&gt; is smoll boi
+...&gt;   &lt;% end %&gt;
+...&gt; &lt;% else %&gt;
+...&gt;   &lt;%= x %&gt; is big boi
+...&gt; &lt;% end %&gt;
+...&gt; "
+iex&gt; EEx.eval_string(nest, x: 4)
+"\n  \n    4 is verry smoll boi\n  \n\n"
+</pre>
+
+<p>
+    Success for nested conditionals! It turns out nesting if's wasn't a great choice for my use
+case. But since we know it's just Elixir function, let's see if we can use one the languages
+best features - pattern matching.
+</p>
+
+<pre class="example">
+iex&gt; pattern = "&lt;%= case x do %&gt;     
+...&gt; &lt;% {1, 2, 3} -&gt; %&gt; exact match
+...&gt; &lt;% {1, 2, _} -&gt; %&gt; close       
+...&gt; &lt;% _ -&gt; %&gt; your parent never loved you 
+...&gt; &lt;% end %&gt;"
+iex&gt; EEx.eval_string(pattern, x: 4)           
+" your parent never loved you \n"
+iex&gt; EEx.eval_string(pattern, x: {1, 2, :wrong})
+" close\n"
+</pre>
+
+<p>
+   Awesome. That wasn't so bad. I wish the docs were clearer about these cool features. Phrases
+like "replace with result" and "inline with output" are a bit cryptic for me but YMMV. One last
+food for thought example.
+</p>
+
+<p>
+Abusing Comments
+</p>
+<pre class="example">
+"&lt;%%= 1 + 1 %&gt;"
+iex(2)&gt; EEx.eval_string(meta)
+"&lt;%= 1 + 1 %&gt;"
+iex(3)&gt; EEx.eval_string(EEx.eval_string(meta))
+"2"
+</pre>
+
+<p>
+   I'm new to Elixir and EEx, but I wonder if there is any use to some sort of two stage templating
+scheme. Perhaps this will be something to revisit once I have some more experience.
 </p>
 </div>
 </div>
@@ -163,7 +291,7 @@ Muh solution
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Michael Dalton</p>
-<p class="date">Created: 2018-09-16 Sun 19:48</p>
+<p class="date">Created: 2018-09-22 Sat 17:02</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

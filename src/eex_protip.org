@@ -3,8 +3,118 @@
 
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./static/org.css"/>
 
-* Eex Eludicated
-** Problem
-Muh problem
-** Solution
-Muh solution
+#+TITLE: ＥＥｘ　ｄｅｍｙｓｔｉｆｉｅｄ　尉ゎ曖
+
+* EEx demystified
+** Preface
+   I've been playing with Elixir for a few months and it's been an absolute joy. The first
+real problem I had involved EEx so I thought I'd have a post detailing how I came to grok the
+docs and move past the problem. It's possible this is totally obvious since I've only used
+SPAs and am new to SSR. However, this is my first post using org-export and I need some reps.
+Now that you've been warned, the the block I hit involved nested conditional logic in EEx. 
+This seems simple enough, however, the EEx docs are terse and while technically correct, I felt 
+like I was reading a project using Doxygen in college - everywhere you look it's the exact 
+same definition and, while correct, if that singular defintion doesn't do it for you, you're up 
+a creek.
+
+Definitions in question ([[https://hexdocs.pm/eex/EEx.html][Link to doc]])
+#+BEGIN_SRC elixir
+<% Elixir expression - inline with output %>
+<%= Elixir expression - replace with result %>
+<%% EEx quotation - returns the contents inside %>
+<%# Comments - they are discarded from source %>
+#+END_SRC
+
+The doc's not so real world example
+#+BEGIN_SRC elixir
+<%= if true do %>
+  It is obviously true
+<% else %>
+  This will never appear
+<% end %>
+#+END_SRC
+
+** Iex session
+   Let's spin up Iex here and see what's going on. Let's try a version of the example provieded
+in the docs. Disclaimer for all iex examples, I have removed all basic REPL confirmation
+responses to increase readability.
+
+Example
+#+BEGIN_SRC 
+iex> template = "<%= if x < 10 do %>
+...>   <%= x %> is smoll boi
+...> <% else %>
+...>   <%= x %> is big boi
+...> <% end %>"
+iex> EEx.eval_string(template, x: 14)
+"\n  14 is big boi\n"
+#+END_SRC
+
+   Intresting, we've nested a <%= and it's evaluated. Let's try replacing that with <%. 
+
+Difference between <% and <%=
+#+BEGIN_SRC 
+iex> template_two = "<%= if x < 10 do %>
+...>   <% x %> is smoll boi
+...> <% else %>
+...>   <% x %> is big boi
+...> <% end %>"
+iex> EEx.eval_string(template_two, x: 14)
+"\n   is big boi\n\n"
+#+END_SRC
+
+    It's missing! And we get some warnings about x being in a code block with no effect (verbose
+so omitted). So it appears the <% tags can contain Elixir code, it just isn't evaluated to 
+template. The <%= will insert the results of any Elixir in the tag. Let's do one more experiment 
+and see if it evalutes multiple levels.
+
+Nested
+#+BEGIN_SRC 
+iex> nest = "<%= if x < 10 do %>
+...>   <%= if x < 5 do %>
+...>     <%= x %> is verry smoll boi
+...>   <%= else %>
+...>     <%= x %> is smoll boi
+...>   <% end %>
+...> <% else %>
+...>   <%= x %> is big boi
+...> <% end %>
+...> "
+iex> EEx.eval_string(nest, x: 4)
+"\n  \n    4 is verry smoll boi\n  \n\n"
+#+END_SRC
+
+    Success for nested conditionals! It turns out nesting if's wasn't a great choice for my use
+case. But since we know it's just Elixir function, let's see if we can use one the languages
+best features - pattern matching.
+
+Pattern Matching
+#+BEGIN_SRC 
+iex> pattern = "<%= case x do %>     
+...> <% {1, 2, 3} -> %> exact match
+...> <% {1, 2, _} -> %> close       
+...> <% _ -> %> your parents never loved you 
+...> <% end %>"
+iex> EEx.eval_string(pattern, x: 4)           
+" your parents never loved you \n"
+iex> EEx.eval_string(pattern, x: {1, 2, :wrong})
+" close\n"
+#+END_SRC
+
+   Awesome. That wasn't so bad. I wish the docs were clearer about these cool features. Phrases
+like "replace with result" and "inline with output" are a bit cryptic for me but YMMV. One last
+food for thought example.
+
+Abusing Comments
+#+BEGIN_SRC 
+"<%%= 1 + 1 %>"
+iex(2)> EEx.eval_string(meta)
+"<%= 1 + 1 %>"
+iex(3)> EEx.eval_string(EEx.eval_string(meta))
+"2"
+#+END_SRC
+
+   I'm new to Elixir and EEx, but I wonder if there is any use to some sort of two stage templating
+scheme. Perhaps this will be something to revisit once I have some more experience.
+
+
