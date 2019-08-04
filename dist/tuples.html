@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Tuple Dive</title>
+<!-- 2019-08-03 Sat 22:26 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Michael Dalton" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./static/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Tuple Dive</h1>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Diving head first</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Update</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+ The new job has been keeping me quite busy, but with a torn meniscus I should have some time
+for a post or two here and there. Unfortunatly, my notes on cool lisp macro stuff are
+unparsable this far out from writing them. So you're going to get a post on tuples in typescript
+after I had the pleasure of trying to bend them to my will for at least a half day last week.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">Preface</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+   The use case here is a greenfield repo at work (not that rare due to microservice architecture).
+Most data is represented in a tabular format which sounds alot like an array of tuples if you ask
+me. None of our other repos really use tuples, so off to the docs we go. TLDR - the docs for 
+tuples are pretty weak. Control-f the advanced types section - 2 results for tuple and
+ it's just used in passing. So here's some of what I learned,  a bit of the basics, some 
+of the advanced, and exploring some of the limitations.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">Basic gotchas</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+   Tuples need to be quite explict. Typescripts cool contextual typing goes out the window
+pretty quick. Variables have to be explicty typed, functions signature must be explicitly matched.
+If you're like me and type a bit more than the example below before you check the typing, this
+can be a painful suprise to decypher. Especially since when tuple type isn't matched it often gives
+you a union of indicies <b>yikes</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-typescript">type Tupleboi = [number, string, null]
+const bad = [1, 'str', null] // type is (number | string | null)[]
+const good: Tupleboi = [1, 'str', null] // type [number, str, null]
+const fun = (x : Tupleboi) =&gt; x ;
+const nosiree = fun(bad); // won't work even though matches signature
+const yessiree = fun(good); // works
+</pre>
+</div>
+
+<p>
+  Even worse, basic higer order functions collapse the types to an array of a union type, so
+you're relegated to casting the transformation which is unfortunate.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-typescript">const collapse = good.map(el =&gt; el); // type is (number | string | null)[]
+const explicitCollapse: Tupleboi = good.map(el =&gt; el);
+ // ^Type '(string | number | null)[]' is missing the following properties 
+ // from type '[number, string, null]': 0, 1, 2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">Diving</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+   I can forgive some of the explict explicit variable declaration, but losing the funcitonal
+inference is a dealbreaker for most of my use cases. Couple of options here - one see if theres 
+a mapped type for tuples to ease my casting, two see if we can write our own tuple hof signatures. So I picked
+what I felt was the easier of the two and started investigating  mapped types for tuples. 
+ Stumbling on github threads like <a href="https://github.com/Microsoft/TypeScript/issues/25947">this</a> seem to be the only indication that this even exists. 
+Unfortunatly in that thread you can see that while some good, more explicit sytaxes were described
+what won out was overloading the existing mapped typed for objects. I'm not even sure how to feel 
+about this; on one hand it's the most technically correct since arrays are just keyed objects under
+ the hood, on the other it's a preversion of a once clear syntax and drops the abstraction between 
+arrays and objects at way too high a level. One clear benifit is the extension of (I belive all)
+ built in mapped types (Partial, Pick, .etc).
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-typescript">Partial&lt;Tupleboi&gt; // [number?, string?, null?]
+</pre>
+</div>
+
+<p>
+After some finicking. We kind of have some mapped types. In my example, I want to take my table 
+rows and indicate that certain indicies can be undefined. The example is more explicit than
+ necessary for later version of typescript, but I think it better conveys whats going on. Actually,
+don't hold me to this but I belive this functionaility has been depreciated on newer versions will
+treat it like a mapped object.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-typescript">type ArrayKeys = keyof any[];
+type Indicies&lt;T&gt; = Exclude&lt;keyof T, ArrayKeys&gt;
+
+type OptionalIndicies&lt;T extends ReadonlyArray, K extends Indicies&lt;T&gt;&gt; = { 
+ [P in Indicies&lt;T&gt;]: P extends K ? T[P] | undefined : T[P] 
+};
+</pre>
+</div>
+
+<p>
+Which (at least in 3.5+) can be written as
+</p>
+<div class="org-src-container">
+
+<pre class="src src-typescript">type ShortOptionalIndicies&lt;T extends Array, K extends keyof T&gt; = { 
+  [P in keyof T]: P extends K ? T[P] | undefined : T[P]
+};
+type Works = ShortOptionalIndicies&lt;Tupleboi, '0' | '1'&gt;; // [number?, string?, null]
+</pre>
+</div>
+
+<p>
+  So this would be great for my general use case, which is declaring prop type at the top of the
+file or using the selector return type and then using mutated versions as I see fit on the 
+subcomponents. However, the transformations inbetween components always collapse the types. 
+So let's see if we can create a basic map type that preserves tuple shape and transforms 
+its tuple typings.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-typescript">const myMap = &lt;U&gt;(arr: T[], cb: ((el: K, i: number, arr: T[]) =&gt; U)) =&gt; {
+  const c = [];
+  for(let i in arr){
+    c.push(cb(arr[i],i,arr));
+  }
+  return c
+}
+</pre>
+</div>
+
+<p>
+  Quickly hit a roadblock here. How would you express c's type? Better yet how would you define
+U's type? Even if you expressed cb as an intersection of each tuple type what would U be? The
+relationship in the mapping would have to infer it's conditionality - which can't be done, so 
+the return type must infer too&#x2026; a union of the return types. This is really the crux of 
+the issue, and I'm not familiar enough with type theory to articualte a the term for it. It's
+a limitation of the inferencing that is linked to the static nature of the type system. It might
+be a complex example but the probelm boils down to the fact that Typescript in it's current static
+ form will never be able to infer dynamic types in this fashion. This was where I stopped my dive
+ and had to get back to work. Where I just quickly made the props an array of interfaces and life 
+was much easier :) Hope you all enjoyed
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Michael Dalton</p>
+<p class="date">Created: 2019-08-03 Sat 22:26</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -7,6 +7,6 @@
 
 # [[file:./about.org][About  ]]
 * Recent Posts
-** [[file:./eex_protip.org][Eex Demystified]]
-#+INCLUDE: "./eex_protip.org" :lines "5-10" Wut
+** [[file:tuples.org][Tuples Deep-ish Dive]]
+** [[file:./eex_protip.org][Eex Playtime]]
 

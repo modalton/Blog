@@ -5,7 +5,7 @@
 
 #+TITLE: ＥＥｘ　ｄｅｍｙｓｔｉｆｉｅｄ　尉ゎ曖
 
-* EEx demystified
+* EEx Playtime
 ** Preface
    I've been playing with Elixir for a few months and it's been an absolute joy. The first
 real problem I had involved EEx so I thought I'd have a post detailing how I came to grok the

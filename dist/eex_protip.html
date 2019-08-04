@@ -3,8 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>Eex Eludicated</title>
-<!-- 2018-09-22 Sat 17:02 -->
+<title>ＥＥｘ　ｄｅｍｙｓｔｉｆｉｅｄ　尉ゎ曖</title>
+<!-- 2019-08-03 Sat 22:07 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Michael Dalton" />
@@ -138,21 +138,21 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Eex Eludicated</h1>
+<h1 class="title">ＥＥｘ　ｄｅｍｙｓｔｉｆｉｅｄ　尉ゎ曖</h1>
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Eex Eludicated</h2>
+<h2 id="sec-1">EEx Playtime</h2>
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-sec-1-1" class="outline-3">
 <h3 id="sec-1-1">Preface</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
    I've been playing with Elixir for a few months and it's been an absolute joy. The first
-real problem I had involved Eex so I thought I'd have a post detailing how I came to grok the
+real problem I had involved EEx so I thought I'd have a post detailing how I came to grok the
 docs and move past the problem. It's possible this is totally obvious since I've only used
 SPAs and am new to SSR. However, this is my first post using org-export and I need some reps.
-Now that you've been warned, the the block I hit involved nested conditional logic in Eex. 
-This seems simple enough, however, the Eex docs are terse and while technically correct, I felt 
+Now that you've been warned, the the block I hit involved nested conditional logic in EEx. 
+This seems simple enough, however, the EEx docs are terse and while technically correct, I felt 
 like I was reading a project using Doxygen in college - everywhere you look it's the exact 
 same definition and, while correct, if that singular defintion doesn't do it for you, you're up 
 a creek.
@@ -231,6 +231,9 @@ template. The &lt;%= will insert the results of any Elixir in the tag. Let's do 
 and see if it evalutes multiple levels.
 </p>
 
+<p>
+Nested
+</p>
 <pre class="example">
 iex&gt; nest = "&lt;%= if x &lt; 10 do %&gt;
 ...&gt;   &lt;%= if x &lt; 5 do %&gt;
@@ -252,14 +255,17 @@ case. But since we know it's just Elixir function, let's see if we can use one t
 best features - pattern matching.
 </p>
 
+<p>
+Pattern Matching
+</p>
 <pre class="example">
 iex&gt; pattern = "&lt;%= case x do %&gt;     
 ...&gt; &lt;% {1, 2, 3} -&gt; %&gt; exact match
 ...&gt; &lt;% {1, 2, _} -&gt; %&gt; close       
-...&gt; &lt;% _ -&gt; %&gt; your parent never loved you 
+...&gt; &lt;% _ -&gt; %&gt; your parents never loved you 
 ...&gt; &lt;% end %&gt;"
 iex&gt; EEx.eval_string(pattern, x: 4)           
-" your parent never loved you \n"
+" your parents never loved you \n"
 iex&gt; EEx.eval_string(pattern, x: {1, 2, :wrong})
 " close\n"
 </pre>
@@ -291,7 +297,7 @@ scheme. Perhaps this will be something to revisit once I have some more experien
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Michael Dalton</p>
-<p class="date">Created: 2018-09-22 Sat 17:02</p>
+<p class="date">Created: 2019-08-03 Sat 22:07</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

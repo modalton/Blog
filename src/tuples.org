@@ -1,0 +1,115 @@
+#+OPTIONS: toc:nil  
+#+OPTIONS: num:nil
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./static/org.css"/>
+
+#+TITLE: Tuple Dive
+
+* Diving head first
+** Update
+  The new job has been keeping me quite busy, but with a torn meniscus I should have some time
+ for a post or two here and there. Unfortunatly, my notes on cool lisp macro stuff are
+ unparsable this far out from writing them. So you're going to get a post on tuples in typescript
+ after I had the pleasure of trying to bend them to my will for at least a half day last week.
+
+** Preface
+   The use case here is a greenfield repo at work (not that rare due to microservice architecture).
+Most data is represented in a tabular format which sounds alot like an array of tuples if you ask
+me. None of our other repos really use tuples, so off to the docs we go. TLDR - the docs for 
+tuples are pretty weak. Control-f the advanced types section - 2 results for tuple and
+ it's just used in passing. So here's some of what I learned,  a bit of the basics, some 
+of the advanced, and exploring some of the limitations.
+
+** Basic gotchas
+   Tuples need to be quite explict. Typescripts cool contextual typing goes out the window
+pretty quick. Variables have to be explicty typed, functions signature must be explicitly matched.
+If you're like me and type a bit more than the example below before you check the typing, this
+can be a painful suprise to decypher. Especially since when tuple type isn't matched it often gives
+you a union of indicies *yikes*
+#+BEGIN_SRC typescript
+type Tupleboi = [number, string, null]
+const bad = [1, 'str', null] // type is (number | string | null)[]
+const good: Tupleboi = [1, 'str', null] // type [number, str, null]
+const fun = (x : Tupleboi) => x ;
+const nosiree = fun(bad); // won't work even though matches signature
+const yessiree = fun(good); // works
+#+END_SRC
+
+   Even worse, basic higer order functions collapse the types to an array of a union type, so
+ you're relegated to casting the transformation which is unfortunate.
+#+BEGIN_SRC typescript
+const collapse = good.map(el => el); // type is (number | string | null)[]
+const explicitCollapse: Tupleboi = good.map(el => el);
+ // ^Type '(string | number | null)[]' is missing the following properties 
+ // from type '[number, string, null]': 0, 1, 2
+#+END_SRC
+
+** Diving
+   I can forgive some of the explict explicit variable declaration, but losing the funcitonal
+inference is a dealbreaker for most of my use cases. Couple of options here - one see if theres 
+a mapped type for tuples to ease my casting, two see if we can write our own tuple hof signatures. So I picked
+what I felt was the easier of the two and started investigating  mapped types for tuples. 
+ Stumbling on github threads like [[https://github.com/Microsoft/TypeScript/issues/25947][this]] seem to be the only indication that this even exists. 
+Unfortunatly in that thread you can see that while some good, more explicit sytaxes were described
+what won out was overloading the existing mapped typed for objects. I'm not even sure how to feel 
+about this; on one hand it's the most technically correct since arrays are just keyed objects under
+ the hood, on the other it's a preversion of a once clear syntax and drops the abstraction between 
+arrays and objects at way too high a level. One clear benifit is the extension of (I belive all)
+ built in mapped types (Partial, Pick, .etc).
+
+#+BEGIN_SRC typescript
+Partial<Tupleboi> // [number?, string?, null?]
+#+END_SRC
+
+After some finicking. We kind of have some mapped types. In my example, I want to take my table 
+rows and indicate that certain indicies can be undefined. The example is more explicit than
+ necessary for later version of typescript, but I think it better conveys whats going on. Actually,
+don't hold me to this but I belive this functionaility has been depreciated on newer versions will
+treat it like a mapped object.
+#+BEGIN_SRC typescript
+type ArrayKeys = keyof any[];
+type Indicies<T> = Exclude<keyof T, ArrayKeys>
+
+type OptionalIndicies<T extends ReadonlyArray, K extends Indicies<T>> = { 
+ [P in Indicies<T>]: P extends K ? T[P] | undefined : T[P] 
+};
+#+END_SRC
+
+Which (at least in 3.5+) can be written as
+#+BEGIN_SRC typescript
+type ShortOptionalIndicies<T extends Array, K extends keyof T> = { 
+  [P in keyof T]: P extends K ? T[P] | undefined : T[P]
+};
+type Works = ShortOptionalIndicies<Tupleboi, '0' | '1'>; // [number?, string?, null]
+#+END_SRC
+
+  So this would be great for my general use case, which is declaring prop type at the top of the
+file or using the selector return type and then using mutated versions as I see fit on the 
+subcomponents. However, the transformations inbetween components always collapse the types. 
+So let's see if we can create a basic map type that preserves tuple shape and transforms 
+its tuple typings.
+
+#+BEGIN_SRC typescript
+const myMap = <U>(arr: T[], cb: ((el: K, i: number, arr: T[]) => U)) => {
+  const c = [];
+  for(let i in arr){
+    c.push(cb(arr[i],i,arr));
+  }
+  return c
+}
+#+END_SRC
+
+  Quickly hit a roadblock here. How would you express c's type? Better yet how would you define
+U's type? Even if you expressed cb as an intersection of each tuple type what would U be? The
+relationship in the mapping would have to infer it's conditionality - which can't be done, so 
+the return type must infer too... a union of the return types. This is really the crux of 
+the issue, and I'm not familiar enough with type theory to articualte a the term for it. It's
+a limitation of the inferencing that is linked to the static nature of the type system. It might
+be a complex example but the probelm boils down to the fact that Typescript in it's current static
+ form will never be able to infer dynamic types in this fashion. This was where I stopped my dive
+ and had to get back to work. Where I just quickly made the props an array of interfaces and life 
+was much easier :) Hope you all enjoyed
+
+
+
+  
