@@ -86,11 +86,11 @@ type Works = ShortOptionalIndicies<Tupleboi, '0' | '1'>; // [number?, string?, n
   So this would be great for my general use case, which is declaring prop type at the top of the
 file or using the selector return type and then using mutated versions as I see fit on the 
 subcomponents. However, the transformations inbetween components always collapse the types. 
-So let's see if we can create a basic map type that preserves tuple shape and transforms 
+So let's see if we can sketch out a basic map type that preserves tuple shape and transforms 
 its tuple typings.
 
 #+BEGIN_SRC typescript
-const myMap = <U>(arr: T[], cb: ((el: K, i: number, arr: T[]) => U)) => {
+const myMap = <T>(arr: T[], cb: ((el: T, i: number, arr: T[]) => infer U)) => {
   const c = [];
   for(let i in arr){
     c.push(cb(arr[i],i,arr));
@@ -101,14 +101,11 @@ const myMap = <U>(arr: T[], cb: ((el: K, i: number, arr: T[]) => U)) => {
 
   Quickly hit a roadblock here. How would you express c's type? Better yet how would you define
 U's type? Even if you expressed cb as an intersection of each tuple type what would U be? The
-relationship in the mapping would have to infer it's conditionality - which can't be done, so 
-the return type must infer too... a union of the return types. This is really the crux of 
-the issue, and I'm not familiar enough with type theory to articualte a the term for it. It's
-a limitation of the inferencing that is linked to the static nature of the type system. It might
-be a complex example but the probelm boils down to the fact that Typescript in it's current static
- form will never be able to infer dynamic types in this fashion. This was where I stopped my dive
+relationship in the mapping would have to infer it's conditionality - which can't be done. This is really the crux of 
+the issue, the infer you want here is limited to co-variant positions, which means it's gonna be
+a union of those candidates. So we're back where we started unfortunately. This was where I stopped my dive
  and had to get back to work. Where I just quickly made the props an array of interfaces and life 
-was much easier :) Hope you all enjoyed
+was sooo much easier :) Hope you all enjoyed
 
 
 

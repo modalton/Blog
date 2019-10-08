@@ -3,10 +3,10 @@
 
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./static/org.css"/>
 
-#+TITLE: Ｖａｐｏｒ－ｂｌｏｇ　メごペ
+#+TITLE: Ｖａｐｏｒ－ｂｌｏｇ
 
 # [[file:./about.org][About  ]]
 * Recent Posts
 ** [[file:tuples.org][Tuples Deep-ish Dive]]
-** [[file:./eex_protip.org][Eex Playtime]]
+** [[file:./eex_protip.org][Eex Cleared Up]]
 
